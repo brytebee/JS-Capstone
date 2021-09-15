@@ -10,7 +10,7 @@ import "./style.css";
 //   .addEventListener("keyup", searchLetter);
 // // const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${input}`;
 
-const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=b`;
+const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=e`;
 const mealsHolder = document.getElementById("mealsHolder");
 mealsHolder.className = "mealsHolder";
 
@@ -37,9 +37,10 @@ const displayMeals = (list) => {
     mealRecipe.textContent = recipe;
 
     mealVideoLink.setAttribute('href', meal.strYoutube);
-    mealVideoLink.textContent = `Youtube Video`;
+    mealVideoLink.textContent = `Youtube Video`; //create a popup to play in-app rather that redirect (v2.0)
 
     mealCard.append(mealImg, mealTitle, mealRecipe, mealVideoLink);
+    commentPopUp(mealCard);
     mealsHolder.appendChild(mealCard);
   });
 };
@@ -51,3 +52,11 @@ const fetchMeals = async () => {
 };
 
 fetchMeals();
+
+const commentPopUp = (card) => {
+  card.addEventListener('click', () => {
+    const popup = open('', 'Popup', 'width=800,height=700');
+    popup.className = 'popup'; //class stying not working.
+    popup.document.body.appendChild(card);
+  });
+}
