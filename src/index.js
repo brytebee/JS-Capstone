@@ -21,8 +21,8 @@ const displayMeals = (list) => {
     const mealTitle = document.createElement("h3");
     const mealRecipe = document.createElement("p");
     const recipe =
-    meal.strInstructions.slice(0, 200) +
-    (meal.strInstructions.length > 200 ? "..." : "");
+    meal.strInstructions.slice(0, 50) +
+    (meal.strInstructions.length > 50 ? "..." : "");
     const mealVideoLink = document.createElement("a");
     
     mealCard.className = "mealCard";
@@ -31,7 +31,7 @@ const displayMeals = (list) => {
     mealImg.setAttribute("alt", meal.strMeal);
     mealImg.className = "meal-img";
 
-    mealTitle.textContent = `${meal.strMeal}`;
+    mealTitle.textContent = meal.strMeal;
     mealTitle.className = "meal-title";
 
     mealRecipe.textContent = recipe;
@@ -47,12 +47,6 @@ const displayMeals = (list) => {
 const fetchMeals = async () => {
   const request = (await fetch(baseUrl)).json();
   const response = await request;
-  response.meals.forEach((meal) =>
-    console.log(
-      meal.strMeal,
-      meal.strYoutube
-    )
-  );
   displayMeals(response.meals);
 };
 
