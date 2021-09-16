@@ -11,11 +11,13 @@ import "./style.css";
 //   .addEventListener("keyup", searchLetter);
 // // const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${input}`;
 
-const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=w`;
+const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=c`;
 const mealsHolder = document.getElementById("mealsHolder");
 mealsHolder.className = "mealsHolder";
+const recipeCount = document.getElementById('recipeCount');
 
 const displayMeals = (list) => {
+  recipeCount.innerText = `${ list.length}`
   list.forEach((meal) => {
     const mealCard = document.createElement("div");
     const mealImg = document.createElement("img");
