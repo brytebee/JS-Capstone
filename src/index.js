@@ -1,6 +1,6 @@
 import './style.css';
 
-// // // Render page by search result (v2.0)
+// // Render page by search result (v2.0)
 // const searchLetter = async(e) => {
 //   fetchMeals();
 //   return e.key;
@@ -12,7 +12,13 @@ import './style.css';
 
 const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=e`;
 const mealsHolder = document.getElementById('mealsHolder');
+const errorMsg = document.getElementById('errorContainer');
 mealsHolder.className = 'mealsHolder';
+
+const renderError = function (msg) {
+  errorMsg.insertAdjacentText('beforeend', msg);
+  errorMsg.style.opacity = 1;
+};
 
 const displayMeals = (list) => {
   list.forEach((meal) => {
@@ -51,9 +57,12 @@ const displayMeals = (list) => {
 };
 
 const fetchMeals = async () => {
-  const request = (await fetch(baseUrl)).json();
-  const response = await request;
-  displayMeals(response.meals);
+  try {
+    const request = await fetch(baseUrl);
+    if (!request.ok) throw new Error('Check connection');
+    const response = await request.json();
+    displayMeals(response.meals);
+  } catch(err) {renderError(err.message);}
 };
 
 fetchMeals();
@@ -131,49 +140,62 @@ const commentPopUp = (meal) => {
 
 const makeComment = async (username, userComment, id) => {
   const baseUrl = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/comments/';
-  username = username.value;
-  userComment = userComment.value;
-  if (username !== '' && userComment !== '') {
-    const newComment = {
-      item_id: id,
-      username: username,
-      comment: userComment,
-    };
-  
-    (await fetch(baseUrl, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(newComment),
-    })).json();
-  
-    username = '';
-    userComment = '';
+  try {
+    username = username.value;
+    userComment = userComment.value;
+    if (username !== '' && userComment !== '') {
+      const newComment = {
+        item_id: id,
+        username: username,
+        comment: userComment,
+      };
+    
+      const res = await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(newComment),
+      })
+      if (!response.ok) {throw new Error('Check input or network')}
+      res.json();
+
+      username = '';
+      userComment = '';
+    }
+  } catch(err) {
+    renderError(err.message);
   }
 };
 
 const showAllComments = async (mealId, mealCard) => {
   const baseUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/comments?item_id=${mealId}`;
 
-  const request = (await fetch(baseUrl)).json();
-  const response = await request;
-  const data = await response;
-  
-  if (data.length > 0) {
-    const commentCount = document.createElement('h2');
-    commentCount.textContent = `Comments (${data.length})`;
-    mealCard.append(commentCount);
+  try {
+    const request = await fetch(baseUrl);
+    console.log('commment fetch', request);
+    if (!request.ok) throw new Error('Problems loading comments. Refresh network or page');
+    const response = await request.json();
+    const data = await response;
+    console.log('Data len', data.length);
+    
+    if (data.length > 0) {
+      const commentCount = document.createElement('h2');
+      commentCount.textContent = `Comments (${data.length})`;
+      // mealCard.append(commentCount);
 
-    data.forEach((comment) => {
-      const commentDate = document.createElement('span');
-      const commentUsername = document.createElement('span');
-      const commentBody = document.createElement('span');
+      data.forEach((comment) => {
+        const commentDate = document.createElement('span');
+        const commentUsername = document.createElement('span');
+        const commentBody = document.createElement('span');
 
-      commentDate.textContent = comment.creation_date;
-      commentUsername.textContent = comment.username;
-      commentBody.textContent = comment.comment;
-      mealCard.append(commentDate, commentUsername, commentBody);
-    });
+        commentDate.textContent = comment.creation_date;
+        commentUsername.textContent = comment.username;
+        commentBody.textContent = comment.comment;
+        mealCard.append(commentCount, commentDate, commentUsername, commentBody);
+      });
+    }
+  } catch(err) {
+    renderError(err.message);
   }
 };
