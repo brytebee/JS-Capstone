@@ -1,3 +1,4 @@
+import { each } from "lodash";
 import "./style.css";
 
 // // // Render page by search result (v2.0)
@@ -10,43 +11,46 @@ import "./style.css";
 //   .addEventListener("keyup", searchLetter);
 // // const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${input}`;
 
-const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=b`;
+const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=w`;
 const mealsHolder = document.getElementById("mealsHolder");
 mealsHolder.className = "mealsHolder";
 
 const displayMeals = (list) => {
   list.forEach((meal) => {
     const mealCard = document.createElement("div");
-    const likeIcon = document.createElement("i");
     const mealImg = document.createElement("img");
     const mealTitle = document.createElement("h3");
     const mealRecipe = document.createElement("p");
-    let mealLikes = document.createElement("span");
+    const mealLikes = document.createElement("p");
     const h3Wrapper = document.createElement("div");
+    const mealLink = document.createElement("a");
     const recipe =
-    meal.strInstructions.slice(0, 10) +
-    (meal.strInstructions.length > 50 ? "..." : "");
+      meal.strInstructions.slice(0, 10) +
+      (meal.strInstructions.length > 50 ? "..." : "");
     const mealVideoLink = document.createElement("a");
-    
-    mealCard.className = "mealCard";
 
     mealImg.setAttribute("src", meal.strMealThumb);
     mealImg.setAttribute("alt", meal.strMeal);
-    mealImg.className = "meal-img";
+    mealVideoLink.setAttribute("href", meal.strYoutube);
+    mealLink.setAttribute("href", "#");
 
-    mealTitle.textContent = meal.strMeal;
+    mealImg.className = "meal-img";
+    mealLikes.className = "meal-likes";
+    h3Wrapper.className = "likes-display";
+    mealLink.className = "icon-wrapper";
+    mealCard.className = "mealCard";
     mealTitle.className = "meal-title";
 
+    mealTitle.textContent = meal.strMeal;
     mealRecipe.textContent = recipe;
-
-    mealVideoLink.setAttribute('href', meal.strYoutube);
     mealVideoLink.textContent = `Youtube Video`;
-    mealLikes.innerText = '0 Likes';
-    mealLikes.className = "meal-likes";
-    likeIcon.className = "fas fa-heart";
-    h3Wrapper.className = "likes-display";
-    h3Wrapper.append(mealTitle, likeIcon);
-    mealCard.append(mealImg,h3Wrapper, mealLikes, mealRecipe, mealVideoLink);
+    mealLink.innerHTML = '<i class="fas fa-heart"></i>';
+
+    mealLink.addEventListener("click", () => sendLikes(meal));
+    displayLikes(meal).then(data => mealLikes.innerHTML = data);
+
+    h3Wrapper.append(mealTitle, mealLink);
+    mealCard.append(mealImg, h3Wrapper, mealLikes, mealRecipe, mealVideoLink);
     mealsHolder.appendChild(mealCard);
   });
 };
@@ -59,6 +63,39 @@ const fetchMeals = async () => {
 
 fetchMeals();
 
-fetch('https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/')
-.then(res => res.json())
-.then(data => console.log(data))
+const sendLikes = async (meal) => {
+  try {
+    const baseUrl =
+      "https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/";
+
+    const res = await fetch(baseUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ item_id: meal.idMeal }),
+    });
+    if (!res.ok) throw new Error("Check your connection/input");
+  } catch (err) {
+    err.message;
+  }
+};
+
+const displayLikes = async (meal) => {
+  const baseUrl =
+    "https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/";
+  try {
+    const res = await fetch(baseUrl);
+    if (!res.ok) throw new Error("No likes Found");
+    const data = await res.json();
+    let like = '0 like(s)';
+    data.forEach((eachMeal) => {
+        if (eachMeal.item_id === meal.idMeal) {
+            like = (`${eachMeal.likes} like(s)`);
+        }
+    })
+    return like
+  } catch (err) {
+    err.message;
+  }
+};
