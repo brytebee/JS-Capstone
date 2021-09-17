@@ -165,6 +165,7 @@ const commentPopUp = async (meal) => {
   window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
+      modalContent.removeChild(mealCard);
     }
   }
 };
