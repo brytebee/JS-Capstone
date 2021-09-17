@@ -61,7 +61,7 @@ body {
   display: flex;
 
   font-size: 2rem;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 10s;
 }
 

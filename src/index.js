@@ -10,14 +10,14 @@ import './style.css';
 //   .addEventListener('keyup', searchLetter);
 // // const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${input}`;
 
-const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=e`;
+const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=b`;
 const mealsHolder = document.getElementById('mealsHolder');
 const errorMsg = document.getElementById('errorContainer');
 mealsHolder.className = 'mealsHolder';
 
 const renderError = function (msg) {
   errorMsg.insertAdjacentText('beforeend', msg);
-  errorMsg.style.opacity = 1;
+  errorMsg.style.opacity = 0;
 };
 
 const displayMeals = (list) => {
@@ -59,7 +59,8 @@ const displayMeals = (list) => {
 const fetchMeals = async () => {
   try {
     const request = await fetch(baseUrl);
-    if (!request.ok) throw new Error('Check connection');
+    
+    if (!request.ok) throw new Error('Something went wrong. Try again');
     const response = await request.json();
     displayMeals(response.meals);
   } catch(err) {renderError(err.message);}
@@ -76,7 +77,7 @@ fetchMeals();
 //   });
 // }
 
-const commentPopUp = (meal) => {
+const commentPopUp = async (meal) => {
   const mealCard = document.createElement('div');
   const mealImg = document.createElement('img');
   const mealTitle = document.createElement('h3');
@@ -91,49 +92,53 @@ const commentPopUp = (meal) => {
   const mealId = meal.idMeal;
   const allComments = document.createElement('div');
 
-  mealCard.className = 'mealCard';
-  allComments.className = 'allComments';
+  // try {
+    mealCard.className = 'mealCard';
+    allComments.className = 'allComments';
 
-  mealImg.setAttribute('src', meal.strMealThumb);
-  mealImg.setAttribute('alt', meal.strMeal);
-  mealImg.className = 'meal-img';
+    mealImg.setAttribute('src', meal.strMealThumb);
+    mealImg.setAttribute('alt', meal.strMeal);
+    mealImg.className = 'meal-img';
 
-  mealTitle.textContent = meal.strMeal;
-  mealTitle.className = 'meal-title';
+    mealTitle.textContent = meal.strMeal;
+    mealTitle.className = 'meal-title';
 
-  mealRecipe.innerHTML = meal.strInstructions;
-  mealRecipe.className = 'recipe';
+    mealRecipe.innerHTML = meal.strInstructions;
+    mealRecipe.className = 'recipe';
 
-  mealVideoLink.setAttribute('href', meal.strYoutube);
-  mealVideoLink.textContent = 'Youtube Video'; //create a popup to play in-app rather that redirect (v2.0)
+    mealVideoLink.setAttribute('href', meal.strYoutube);
+    mealVideoLink.textContent = 'Youtube Video'; //create a popup to play in-app rather that redirect (v2.0)
 
-  commentButton.textContent = 'Comments';
-  
-  form.setAttribute('method', 'post');
-  
-  name.setAttribute('type', 'text');
-  name.id = 'username';
-  name.setAttribute('placeholder', 'Your name');
-  
-  comment.setAttribute( 'name', 'comment');
-  comment.setAttribute( 'rows', '10');
-  comment.setAttribute( 'cols', '80');
-  comment.setAttribute( 'placeholder', 'Your Comment...');
-  
-  form.innerText = 'Add a comment';
-  form.className = 'comment-form';
-  form.append(linebreak, name, linebreak, comment, linebreak);
-  commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
-  allComments.innerHTML = showAllComments(mealId, mealCard);
-  
-  mealCard.append(
-    mealImg,
-    mealTitle,
-    mealRecipe,
-    mealVideoLink,
-    form,
-    commentButton,
-  );
+    commentButton.textContent = 'Comments';
+    
+    form.setAttribute('method', 'post');
+    
+    name.setAttribute('type', 'text');
+    name.id = 'username';
+    name.setAttribute('placeholder', 'Your name');
+    
+    comment.setAttribute( 'name', 'comment');
+    comment.setAttribute( 'rows', '10');
+    comment.setAttribute( 'cols', '80');
+    comment.setAttribute( 'placeholder', 'Your Comment...');
+    
+    form.innerText = 'Add a comment';
+    form.className = 'comment-form';
+    form.append(linebreak, name, linebreak, comment, linebreak);
+    commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
+    showAllComments(mealId, mealCard).then(data => allComments.innerHTML = data);
+
+    // } finally {
+      mealCard.append(
+      mealImg,
+      mealTitle,
+      mealRecipe,
+      mealVideoLink,
+      allComments,
+      form,
+      commentButton,
+    );
+  // }
   const popup = open('', 'Popup', 'width=800,height=700');
   popup.document.body.appendChild(mealCard);
 };
@@ -150,7 +155,7 @@ const makeComment = async (username, userComment, id) => {
         comment: userComment,
       };
     
-      const res = await fetch(baseUrl, {
+      await fetch(baseUrl, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -158,7 +163,6 @@ const makeComment = async (username, userComment, id) => {
         body: JSON.stringify(newComment),
       })
       if (!response.ok) {throw new Error('Check input or network')}
-      res.json();
 
       username = '';
       userComment = '';
@@ -173,27 +177,25 @@ const showAllComments = async (mealId, mealCard) => {
 
   try {
     const request = await fetch(baseUrl);
-    console.log('commment fetch', request);
     if (!request.ok) throw new Error('Problems loading comments. Refresh network or page');
     const response = await request.json();
     const data = await response;
-    console.log('Data len', data.length);
     
     if (data.length > 0) {
       const commentCount = document.createElement('h2');
       commentCount.textContent = `Comments (${data.length})`;
-      // mealCard.append(commentCount);
+      let returnContainer = [commentCount.innerText];
 
       data.forEach((comment) => {
         const commentDate = document.createElement('span');
         const commentUsername = document.createElement('span');
         const commentBody = document.createElement('span');
-
-        commentDate.textContent = comment.creation_date;
-        commentUsername.textContent = comment.username;
-        commentBody.textContent = comment.comment;
-        mealCard.append(commentCount, commentDate, commentUsername, commentBody);
+        
+        returnContainer.push(commentDate.textContent = comment.creation_date);
+        returnContainer.push(commentUsername.textContent = comment.username);
+        returnContainer.push(commentBody.textContent = comment.comment);
       });
+      return (returnContainer);
     }
   } catch(err) {
     renderError(err.message);
