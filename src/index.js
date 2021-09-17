@@ -11,7 +11,7 @@ import './style.css';
 //   .addEventListener('keyup', searchLetter);
 // // const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${input}`;
 
-const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=c`;
+const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=e`;
 const mealsHolder = document.getElementById('mealsHolder');
 const errorMsg = document.getElementById('errorContainer');
 const recipeCount = document.getElementById('recipeCount');
@@ -48,7 +48,7 @@ const displayMeals = (list) => {
     mealCard.className = "mealCard";
     mealTitle.className = "meal-title";
     mealRecipe.className = 'meal-recipe';
-    commentButton.className = 'comment'
+    commentButton.className = 'comment';
 
 
     mealTitle.textContent = `${meal.strMeal.slice(0, 15)} ...`;
@@ -105,8 +105,10 @@ const commentPopUp = async (meal) => {
   const commentButton = document.createElement('button');
   const modal = document.getElementById("myModal");
   const modalContent = document.getElementById('modal-content');
+  const formHeader = document.createElement('h3');
 
   mealCard.className = 'mealCard';
+  mealCard.id = 'popMealCard';
   allComments.className = 'allComments';
 
   mealImg.setAttribute('src', meal.strMealThumb);
@@ -115,17 +117,21 @@ const commentPopUp = async (meal) => {
 
   mealTitle.textContent = meal.strMeal;
   mealTitle.className = 'meal-title';
+  mealTitle.id = 'meal-title';
+  mealVideoLink.id = 'video-link';
 
   mealRecipe.innerHTML = meal.strInstructions;
   mealRecipe.className = 'recipe';
+  mealRecipe.id = 'popup-meal-recipe';
 
   mealVideoLink.setAttribute('href', meal.strYoutube);
   mealVideoLink.textContent = 'Youtube Video'; //create a popup to play in-app rather that redirect (v2.0)
 
   commentButton.textContent = 'Comments';
+  commentButton.className = 'comment';
   
   form.setAttribute('method', 'post');
-  
+  form.id = 'popup-form';
   name.setAttribute('type', 'text');
   name.id = 'username';
   name.setAttribute('placeholder', 'Your name');
@@ -135,9 +141,10 @@ const commentPopUp = async (meal) => {
   comment.setAttribute( 'cols', '60');
   comment.setAttribute( 'placeholder', 'Your Comment...');
   
-  form.innerText = 'Add a comment';
+  formHeader.innerText = 'Add a comment';
   form.className = 'comment-form';
-  form.append(linebreak, name, linebreak, comment, linebreak);
+  formHeader.className = 'formHeader';
+  form.append(name, linebreak, comment, linebreak);
   commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
   showAllComments(mealId, mealCard).then(data => allComments.innerHTML = data);
 
@@ -147,6 +154,7 @@ const commentPopUp = async (meal) => {
     mealRecipe,
     mealVideoLink,
     allComments,
+    formHeader,
     form,
     commentButton,
   );
