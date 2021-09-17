@@ -38,8 +38,6 @@ const displayMeals = (list) => {
     const h3Wrapper = document.createElement("div");
     const mealLink = document.createElement("a");
 
-    mealTitle.textContent = meal.strMeal;
-
     mealImg.setAttribute("src", meal.strMealThumb);
     mealImg.setAttribute("alt", meal.strMeal);
     mealVideoLink.setAttribute("href", meal.strYoutube);
