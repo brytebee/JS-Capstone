@@ -29,14 +29,12 @@ const displayMeals = (list) => {
     const mealImg = document.createElement('img');
     const mealTitle = document.createElement('h3');
     const mealRecipe = document.createElement('p');
-    const recipe =
-      meal.strInstructions.slice(0, 50) +
-      (meal.strInstructions.length > 50 ? '...' : '');
     const mealVideoLink = document.createElement('a');
     const commentButton = document.createElement('button');
     const mealLikes = document.createElement("p");
     const h3Wrapper = document.createElement("div");
     const mealLink = document.createElement("a");
+    const recipe = meal.strInstructions;
 
     mealImg.setAttribute("src", meal.strMealThumb);
     mealImg.setAttribute("alt", meal.strMeal);
