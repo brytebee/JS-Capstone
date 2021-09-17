@@ -10,6 +10,17 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f9faff;
+  font-size: 1.1rem;
+}
+
+a,
+.nav {
+  text-decoration: none;
+  color: white;
+}
+
+.nav:hover {
+  border-bottom-style: solid;
 }
 
 /* nav & footer */
@@ -51,6 +62,10 @@ body {
   overflow: hidden;
 }
 
+.mealCard:nth-child(even) {
+  background-color: rgb(163, 131, 131);
+}
+
 .meal-likes {
   display: flex;
   justify-content: end;
@@ -75,6 +90,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin: 8px 16px 0;
+  color: white;
 }
 
 .meal-recipe {
@@ -83,6 +99,20 @@ body {
   line-height: 1.5;
   height: 3em;
   overflow: hidden;
+}
+
+.comment {
+  display: flex;
+  text-align: center;
+  margin: auto;
+  padding: 10px 36px;
+  margin-bottom: 16px;
+  border-radius: 7px;
+  border: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgb(61, 45, 23);
+  cursor: pointer;
 }
 
 .footer {

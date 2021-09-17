@@ -11,7 +11,7 @@ import './style.css';
 //   .addEventListener('keyup', searchLetter);
 // // const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${input}`;
 
-const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=e`;
+const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=c`;
 const mealsHolder = document.getElementById('mealsHolder');
 const errorMsg = document.getElementById('errorContainer');
 const recipeCount = document.getElementById('recipeCount');
@@ -47,10 +47,11 @@ const displayMeals = (list) => {
     mealLink.className = "icon-wrapper";
     mealCard.className = "mealCard";
     mealTitle.className = "meal-title";
-    mealRecipe.className = 'meal-recipe'
+    mealRecipe.className = 'meal-recipe';
+    commentButton.className = 'comment'
 
 
-    mealTitle.textContent = meal.strMeal;
+    mealTitle.textContent = `${meal.strMeal.slice(0, 15)} ...`;
     mealRecipe.textContent = recipe;
     mealVideoLink.textContent = `Youtube Video`; //create a popup to play in-app rather that redirect (v2.0)
     commentButton.textContent = 'Comments';
