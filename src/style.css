@@ -48,7 +48,21 @@ body {
   padding: 20px;
 }
 
+.meal-likes {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 200px;
+}
+
 .meal-img {
+  width: 200px;
+}
+
+.likes-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 200px;
 }
 

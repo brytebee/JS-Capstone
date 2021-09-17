@@ -13,6 +13,7 @@ import './style.css';
 const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=b`;
 const mealsHolder = document.getElementById('mealsHolder');
 const errorMsg = document.getElementById('errorContainer');
+const recipeCount = document.getElementById('recipeCount');
 mealsHolder.className = 'mealsHolder';
 
 const renderError = function (msg) {
@@ -21,6 +22,7 @@ const renderError = function (msg) {
 };
 
 const displayMeals = (list) => {
+  recipeCount.innerText = `${ list.length}`
   list.forEach((meal) => {
     const mealCard = document.createElement('div');
     const mealImg = document.createElement('img');
@@ -31,27 +33,38 @@ const displayMeals = (list) => {
       (meal.strInstructions.length > 50 ? '...' : '');
     const mealVideoLink = document.createElement('a');
     const commentButton = document.createElement('button');
-
-    mealCard.className = 'mealCard';
-
-    mealImg.setAttribute('src', meal.strMealThumb);
-    mealImg.setAttribute('alt', meal.strMeal);
-    mealImg.className = 'meal-img';
+    const mealLikes = document.createElement("p");
+    const h3Wrapper = document.createElement("div");
+    const mealLink = document.createElement("a");
 
     mealTitle.textContent = meal.strMeal;
-    mealTitle.className = 'meal-title';
 
+    mealImg.setAttribute("src", meal.strMealThumb);
+    mealImg.setAttribute("alt", meal.strMeal);
+    mealVideoLink.setAttribute("href", meal.strYoutube);
+    mealLink.setAttribute("href", "#");
+
+    mealImg.className = "meal-img";
+    mealLikes.className = "meal-likes";
+    h3Wrapper.className = "likes-display";
+    mealLink.className = "icon-wrapper";
+    mealCard.className = "mealCard";
+    mealTitle.className = "meal-title";
+
+
+    mealTitle.textContent = meal.strMeal;
     mealRecipe.textContent = recipe;
-
-    mealVideoLink.setAttribute('href', meal.strYoutube);
     mealVideoLink.textContent = `Youtube Video`; //create a popup to play in-app rather that redirect (v2.0)
-
     commentButton.textContent = 'Comments';
-    commentButton.addEventListener('click', () => commentPopUp(meal));
+    mealLink.innerHTML = '<i class="fas fa-heart"></i>';
 
-    // mealCard.append(mealImg, mealTitle, mealRecipe, mealVideoLink, commentButton);
-    mealCard.append(mealImg, mealTitle, mealRecipe, commentButton);
-    // commentPopUp(mealCard);
+    commentButton.addEventListener('click', () => commentPopUp(meal));
+    mealLink.addEventListener("click", () => sendLikes(meal));
+    
+    displayLikes(meal).then(data => mealLikes.innerHTML = data);
+    
+    h3Wrapper.append(mealTitle, mealLink);
+    mealCard.append(mealImg, h3Wrapper, mealLikes, mealRecipe, commentButton, mealVideoLink);
     mealsHolder.appendChild(mealCard);
   });
 };
@@ -199,5 +212,42 @@ const showAllComments = async (mealId, mealCard) => {
     }
   } catch(err) {
     renderError(err.message);
+  }
+};
+
+const sendLikes = async (meal) => {
+  try {
+    const baseUrl =
+      "https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/";
+
+    const res = await fetch(baseUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ item_id: meal.idMeal }),
+    });
+    if (!res.ok) throw new Error("Check your connection/input");
+  } catch (err) {
+    err.message;
+  }
+};
+
+const displayLikes = async (meal) => {
+  const baseUrl =
+    "https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/";
+  try {
+    const res = await fetch(baseUrl);
+    if (!res.ok) throw new Error("No likes Found");
+    const data = await res.json();
+    let like = '0 like(s)';
+    data.forEach((eachMeal) => {
+        if (eachMeal.item_id === meal.idMeal) {
+            like = (`${eachMeal.likes} like(s)`);
+        }
+    })
+    return like
+  } catch (err) {
+    err.message;
   }
 };
