@@ -38,7 +38,7 @@ body {
 .mealsHolder {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 20px;
   grid-auto-rows: minmax(100px, auto);
   background-color: #edeff5;
   padding: 30px;
@@ -60,6 +60,10 @@ body {
 
 .meal-img {
   width: 100%;
+}
+
+.meal-img:hover {
+  transform: scale(1.2);
 }
 
 .likes-display {
