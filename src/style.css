@@ -45,7 +45,10 @@ body {
 }
 
 .mealCard {
-  padding: 20px;
+  /* padding: 20px; */
+  background-color: rgb(195, 165, 124);
+  border-radius: 17px;
+  overflow: hidden;
 }
 
 .meal-likes {
