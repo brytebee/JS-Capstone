@@ -9,27 +9,50 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #cbcdd1;
 }
 
-.hello {
-  color: red;
-  font-family: "MyFont";
+/* nav & footer */
+.color-coffee {
+  color: #f9faff;
+  background-color: #262626;
 }
 
 .nav-list {
   list-style: none;
   display: flex;
   justify-content: space-around;
-  padding: 10px;
-  background-color: rgb(209, 98, 0);
+  padding: 24px;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .content {
-  margin: 5% 20%;
+  margin: 0 15%;
+}
+
+#input {
+  align-self: center;
+}
+
+.mealsHolder {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  background-color: #f9faff;
+  padding: 30px 30px 30px 40px;
+}
+
+.mealCard {
+  padding: 20px;
+}
+
+.meal-img {
+  width: 200px;
 }
 
 .footer {
-  border: 0.5px solid rgb(209, 98, 0);
   text-align: center;
-  background-color: rgb(195, 187, 187);
+  padding: 16px;
 }
