@@ -55,7 +55,7 @@ body {
   display: flex;
   justify-content: end;
   align-items: center;
-  width: 200px;
+  padding-right: 16px;
 }
 
 .meal-img {
