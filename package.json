@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/brytebee/JS-Capstone/issues"
   },
-  "homepage": "https://github.com/brytebee/JS-Capstone#readme",
+  "homepage": "https://github.com/brytebee/JS-Capstone/dist",
   "devDependencies": {
     "css-loader": "^6.2.0",
     "hint": "^6.1.4",
