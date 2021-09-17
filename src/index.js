@@ -101,11 +101,13 @@ const commentPopUp = async (meal) => {
   const comment = document.createElement('textarea');
   const linebreak = document.createElement('br');
   const mealId = meal.idMeal;
-  const allComments = document.createElement('div');
+  const allComments = document.createElement('ul');
+  const li = document.createElement('ul');
   const commentButton = document.createElement('button');
   const modal = document.getElementById("myModal");
   const modalContent = document.getElementById('modal-content');
   const formHeader = document.createElement('h3');
+  const commentHeader = document.createElement('h3');
 
   mealCard.className = 'mealCard';
   mealCard.id = 'popMealCard';
@@ -146,13 +148,22 @@ const commentPopUp = async (meal) => {
   formHeader.className = 'formHeader';
   form.append(name, linebreak, comment, linebreak);
   commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
-  showAllComments(mealId, mealCard).then(data => allComments.innerHTML = data);
+  showAllComments(mealId, mealCard).then(data => {
+    commentHeader.innerText = data[0];
+    for (const index in data) {
+      if (index !== 0) {
+        li.innerHTML = data[index];
+      }
+    }
+  });
 
   mealCard.append(
     mealImg,
     mealTitle,
     mealRecipe,
     mealVideoLink,
+    commentHeader,
+    li,
     allComments,
     formHeader,
     form,
