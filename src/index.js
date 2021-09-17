@@ -49,6 +49,7 @@ const displayMeals = (list) => {
     mealLink.className = "icon-wrapper";
     mealCard.className = "mealCard";
     mealTitle.className = "meal-title";
+    mealRecipe.className = 'meal-recipe'
 
 
     mealTitle.textContent = meal.strMeal;
