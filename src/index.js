@@ -11,7 +11,7 @@ import './style.css';
 //   .addEventListener('keyup', searchLetter);
 // // const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${input}`;
 
-const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=b`;
+const baseUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=e`;
 const mealsHolder = document.getElementById('mealsHolder');
 const errorMsg = document.getElementById('errorContainer');
 const recipeCount = document.getElementById('recipeCount');

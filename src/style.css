@@ -9,7 +9,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #cbcdd1;
+  background-color: #f9faff;
 }
 
 /* nav & footer */
@@ -40,8 +40,8 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   grid-auto-rows: minmax(100px, auto);
-  background-color: #f9faff;
-  padding: 30px 30px 30px 40px;
+  background-color: #edeff5;
+  padding: 30px;
 }
 
 .mealCard {
