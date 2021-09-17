@@ -65,7 +65,7 @@ const displayMeals = (list) => {
     displayLikes(meal).then(data => mealLikes.innerHTML = data);
     
     h3Wrapper.append(mealTitle, mealLink);
-    mealCard.append(mealImg, h3Wrapper, mealLikes, mealRecipe, commentButton, mealVideoLink);
+    mealCard.append(mealImg, h3Wrapper, mealLikes, mealRecipe, commentButton);
     mealsHolder.appendChild(mealCard);
   });
 };
@@ -134,7 +134,7 @@ const commentPopUp = async (meal) => {
   
   comment.setAttribute( 'name', 'comment');
   comment.setAttribute( 'rows', '10');
-  comment.setAttribute( 'cols', '80');
+  comment.setAttribute( 'cols', '60');
   comment.setAttribute( 'placeholder', 'Your Comment...');
   
   form.innerText = 'Add a comment';
@@ -203,7 +203,6 @@ const showAllComments = async (mealId, mealCard) => {
 
   try {
     const request = await fetch(baseUrl);
-    if (!request.ok) throw new Error('Problems loading comments. Refresh network or page');
     const response = await request.json();
     const data = await response;
     
