@@ -1,3 +1,4 @@
+import { implementation } from 'array.prototype.flat';
 import './style.css';
 
 // // Render page by search result (v2.0)
@@ -97,63 +98,75 @@ const commentPopUp = async (meal) => {
   // const mealIgredient = document.createElement('div'); // Add meal ingredient (v2.0)
   const mealRecipe = document.createElement('div');
   const mealVideoLink = document.createElement('a');
-  const commentButton = document.createElement('button');
   const form = document.createElement('form');
   const name = document.createElement('input');
   const comment = document.createElement('textarea');
   const linebreak = document.createElement('br');
   const mealId = meal.idMeal;
   const allComments = document.createElement('div');
+  const commentButton = document.createElement('button');
+  const modal = document.getElementById("myModal");
+  const modalContent = document.getElementById('modal-content');
 
-  // try {
-    mealCard.className = 'mealCard';
-    allComments.className = 'allComments';
+  mealCard.className = 'mealCard';
+  allComments.className = 'allComments';
 
-    mealImg.setAttribute('src', meal.strMealThumb);
-    mealImg.setAttribute('alt', meal.strMeal);
-    mealImg.className = 'meal-img';
+  mealImg.setAttribute('src', meal.strMealThumb);
+  mealImg.setAttribute('alt', meal.strMeal);
+  mealImg.className = 'meal-img';
 
-    mealTitle.textContent = meal.strMeal;
-    mealTitle.className = 'meal-title';
+  mealTitle.textContent = meal.strMeal;
+  mealTitle.className = 'meal-title';
 
-    mealRecipe.innerHTML = meal.strInstructions;
-    mealRecipe.className = 'recipe';
+  mealRecipe.innerHTML = meal.strInstructions;
+  mealRecipe.className = 'recipe';
 
-    mealVideoLink.setAttribute('href', meal.strYoutube);
-    mealVideoLink.textContent = 'Youtube Video'; //create a popup to play in-app rather that redirect (v2.0)
+  mealVideoLink.setAttribute('href', meal.strYoutube);
+  mealVideoLink.textContent = 'Youtube Video'; //create a popup to play in-app rather that redirect (v2.0)
 
-    commentButton.textContent = 'Comments';
+  commentButton.textContent = 'Comments';
+  
+  form.setAttribute('method', 'post');
+  
+  name.setAttribute('type', 'text');
+  name.id = 'username';
+  name.setAttribute('placeholder', 'Your name');
+  
+  comment.setAttribute( 'name', 'comment');
+  comment.setAttribute( 'rows', '10');
+  comment.setAttribute( 'cols', '80');
+  comment.setAttribute( 'placeholder', 'Your Comment...');
+  
+  form.innerText = 'Add a comment';
+  form.className = 'comment-form';
+  form.append(linebreak, name, linebreak, comment, linebreak);
+  commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
+  showAllComments(mealId, mealCard).then(data => allComments.innerHTML = data);
+
+  mealCard.append(
+    mealImg,
+    mealTitle,
+    mealRecipe,
+    mealVideoLink,
+    allComments,
+    form,
+    commentButton,
+  );
+
+  modalContent.append(mealCard);
+  
+  modal.style.display = "block";
+
+  document.getElementsByClassName("close")[0].addEventListener('click', () => {
+    modal.style.display = "none";
+    modalContent.removeChild(mealCard);
+  })
     
-    form.setAttribute('method', 'post');
-    
-    name.setAttribute('type', 'text');
-    name.id = 'username';
-    name.setAttribute('placeholder', 'Your name');
-    
-    comment.setAttribute( 'name', 'comment');
-    comment.setAttribute( 'rows', '10');
-    comment.setAttribute( 'cols', '80');
-    comment.setAttribute( 'placeholder', 'Your Comment...');
-    
-    form.innerText = 'Add a comment';
-    form.className = 'comment-form';
-    form.append(linebreak, name, linebreak, comment, linebreak);
-    commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
-    showAllComments(mealId, mealCard).then(data => allComments.innerHTML = data);
-
-    // } finally {
-      mealCard.append(
-      mealImg,
-      mealTitle,
-      mealRecipe,
-      mealVideoLink,
-      allComments,
-      form,
-      commentButton,
-    );
-  // }
-  const popup = open('', 'Popup', 'width=800,height=700');
-  popup.document.body.appendChild(mealCard);
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 };
 
 const makeComment = async (username, userComment, id) => {
