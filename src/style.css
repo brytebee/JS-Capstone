@@ -92,6 +92,15 @@ a,
   overflow: hidden;
 }
 
+.icon-wrapper {
+  color: white;
+}
+
+.icon-wrapper:hover {
+  color: red;
+  cursor: pointer;
+}
+
 .comment {
   display: flex;
   text-align: center;
