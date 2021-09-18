@@ -40,10 +40,9 @@ const makeComment = async (username, userComment, id) => {
         },
         body: JSON.stringify(newComment),
       });
-
-      username = '';
-      userComment = '';
     }
+    username = '';
+    userComment = '';
   } catch (err) {
     renderError(err.message);
   }
@@ -51,31 +50,16 @@ const makeComment = async (username, userComment, id) => {
 
 const showAllComments = async (mealId) => {
   const baseUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/comments?item_id=${mealId}`;
-  const commentCount = document.createElement('h2');
-  const returnContainer = [commentCount.innerText];
+  let data;
 
   try {
     const request = await fetch(baseUrl);
     const response = await request.json();
-    const data = await response;
-
-    if (data.length > 0) {
-      commentCount.textContent = `Comments (${data.length})`;
-
-      data.forEach((comment) => {
-        const commentDate = document.createElement('span');
-        const commentUsername = document.createElement('span');
-        const commentBody = document.createElement('span');
-
-        returnContainer.push(commentDate.textContent = comment.creation_date);
-        returnContainer.push(commentUsername.textContent = comment.username);
-        returnContainer.push(commentBody.textContent = comment.comment);
-      });
-    }
+    data = await response;
   } catch (err) {
     renderError(err.message);
   }
-  return (returnContainer);
+  return data;
 };
 
 const commentPopUp = async (meal) => {
@@ -90,11 +74,12 @@ const commentPopUp = async (meal) => {
   const comment = document.createElement('textarea');
   const linebreak = document.createElement('br');
   const mealId = meal.idMeal;
-  const allComments = document.createElement('div');
+  const allComments = document.createElement('ul');
   const commentButton = document.createElement('button');
   const modal = document.getElementById('myModal');
   const modalContent = document.getElementById('modal-content');
   const formHeader = document.createElement('h3');
+  const commentHeader = document.createElement('h3');
 
   mealCard.className = 'mealCard';
   mealCard.id = 'popMealCard';
@@ -134,14 +119,49 @@ const commentPopUp = async (meal) => {
   form.className = 'comment-form';
   formHeader.className = 'formHeader';
   form.append(name, linebreak, comment, linebreak);
-  commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
-  showAllComments(mealId).then((data) => { allComments.innerHTML = data; });
+
+  showAllComments(mealId).then((data) => {
+    if (data.message === `${mealId} not found.` || data.message === 'item_id\' not found.') {
+      commentHeader.innerText = 'This Recipe has no comments yet!\nAdd some comments!';
+    } else {
+      commentHeader.innerText = `Comments (${data.length})`;
+      data.forEach((comm) => {
+        const li = document.createElement('li');
+        li.style.listStyle = 'none';
+        li.style.margin = '0 32px';
+        li.style.color = 'darkbrown';
+        li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
+        allComments.append(li);
+      });
+    }
+  });
+
+  commentButton.addEventListener('click', () => {
+    makeComment(name, comment, mealId);
+    showAllComments(mealId).then((data) => {
+      if (data.length === `${mealId} not found.` || data.message === 'item_id\' not found.') {
+        commentHeader.innerText = 'This Recipe has no comments yet!\nAdd some comments!';
+      } else {
+        commentHeader.innerText = `Comments (${data.length})`;
+        data.forEach((comm) => {
+          const li = document.createElement('li');
+          li.style.listStyle = 'none';
+          li.style.margin = '0 32px';
+          li.style.color = 'darkbrown';
+          li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
+          allComments.append(li);
+        });
+      }
+    });
+  });
 
   mealCard.append(
     mealImg,
     mealTitle,
     mealRecipe,
     mealVideoLink,
+    commentHeader,
+    // li,
     allComments,
     formHeader,
     form,
@@ -169,14 +189,13 @@ const sendLikes = async (meal) => {
   try {
     const baseUrl = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/';
 
-    const res = await fetch(baseUrl, {
+    await fetch(baseUrl, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
       },
       body: JSON.stringify({ item_id: meal.idMeal }),
     });
-    if (!res.ok) throw new Error('Check your connection/input');
   } catch (err) {
     renderError(err.message);
   }
@@ -187,7 +206,6 @@ const displayLikes = async (meal) => {
   let like = '0 like(s)';
   try {
     const res = await fetch(baseUrl);
-    if (!res.ok) throw new Error('No likes Found');
     const data = await res.json();
     data.forEach((eachMeal) => {
       if (eachMeal.item_id === meal.idMeal) {
@@ -217,7 +235,6 @@ const displayMeals = (list) => {
     mealImg.setAttribute('src', meal.strMealThumb);
     mealImg.setAttribute('alt', meal.strMeal);
     mealVideoLink.setAttribute('href', meal.strYoutube);
-    mealLink.setAttribute('href', '#');
 
     mealImg.className = 'meal-img';
     mealLikes.className = 'meal-likes';
@@ -235,9 +252,12 @@ const displayMeals = (list) => {
     mealLink.innerHTML = '<i class="fas fa-heart"></i>';
 
     commentButton.addEventListener('click', () => commentPopUp(meal));
-    mealLink.addEventListener('click', () => sendLikes(meal));
-
     displayLikes(meal).then((data) => { mealLikes.innerHTML = data; });
+    mealLink.addEventListener('click', () => {
+      sendLikes(meal).then(() => {
+        displayLikes(meal).then((data) => { mealLikes.innerHTML = data; });
+      });
+    });
 
     h3Wrapper.append(mealTitle, mealLink);
     mealCard.append(mealImg, h3Wrapper, mealLikes, mealRecipe, commentButton);
