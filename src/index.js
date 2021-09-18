@@ -39,7 +39,6 @@ const displayMeals = (list) => {
     mealImg.setAttribute("src", meal.strMealThumb);
     mealImg.setAttribute("alt", meal.strMeal);
     mealVideoLink.setAttribute("href", meal.strYoutube);
-    mealLink.setAttribute("href", "#");
 
     mealImg.className = "meal-img";
     mealLikes.className = "meal-likes";
@@ -58,9 +57,12 @@ const displayMeals = (list) => {
     mealLink.innerHTML = '<i class="fas fa-heart"></i>';
 
     commentButton.addEventListener('click', () => commentPopUp(meal));
-    mealLink.addEventListener("click", () => sendLikes(meal));
-    
     displayLikes(meal).then(data => mealLikes.innerHTML = data);
+    mealLink.addEventListener("click", () => {
+      sendLikes(meal).then(() => {
+        displayLikes(meal).then(data => mealLikes.innerHTML = data);
+      });
+    });
     
     h3Wrapper.append(mealTitle, mealLink);
     mealCard.append(mealImg, h3Wrapper, mealLikes, mealRecipe, commentButton);
@@ -102,7 +104,7 @@ const commentPopUp = async (meal) => {
   const linebreak = document.createElement('br');
   const mealId = meal.idMeal;
   const allComments = document.createElement('ul');
-  const li = document.createElement('ul');
+  const li = document.createElement('li');
   const commentButton = document.createElement('button');
   const modal = document.getElementById("myModal");
   const modalContent = document.getElementById('modal-content');
@@ -147,14 +149,27 @@ const commentPopUp = async (meal) => {
   form.className = 'comment-form';
   formHeader.className = 'formHeader';
   form.append(name, linebreak, comment, linebreak);
-  commentButton.addEventListener('click', () => makeComment(name, comment, mealId));
+  
   showAllComments(mealId, mealCard).then(data => {
-    commentHeader.innerText = data[0];
-    for (const index in data) {
-      if (index !== 0) {
-        li.innerHTML = data[index];
-      }
+    console.log(data);
+    if (data.message === `${mealId} not found.` || data.message === `item_id' not found.` ) {
+      commentHeader.innerText = `This Recipe has no comments yet!
+      Add some comments!`;
+    } else {
+      data.forEach((comm) => {
+        li.append(comm.username);
+        console.log(comm.username);
+      })
+      allComments.innerHTML = (li);
     }
+  });
+
+  commentButton.addEventListener('click', () => {
+    makeComment(name, comment, mealId)
+    
+    showAllComments(mealId, mealCard).then(data => {
+      
+    });
   });
 
   mealCard.append(
@@ -223,23 +238,7 @@ const showAllComments = async (mealId, mealCard) => {
     const request = await fetch(baseUrl);
     const response = await request.json();
     const data = await response;
-    
-    if (data.length > 0) {
-      const commentCount = document.createElement('h2');
-      commentCount.textContent = `Comments (${data.length})`;
-      let returnContainer = [commentCount.innerText];
-
-      data.forEach((comment) => {
-        const commentDate = document.createElement('span');
-        const commentUsername = document.createElement('span');
-        const commentBody = document.createElement('span');
-        
-        returnContainer.push(commentDate.textContent = comment.creation_date);
-        returnContainer.push(commentUsername.textContent = comment.username);
-        returnContainer.push(commentBody.textContent = comment.comment);
-      });
-      return (returnContainer);
-    }
+    return data;
   } catch(err) {
     renderError(err.message);
   }
@@ -257,7 +256,6 @@ const sendLikes = async (meal) => {
       },
       body: JSON.stringify({ item_id: meal.idMeal }),
     });
-    if (!res.ok) throw new Error("Check your connection/input");
   } catch (err) {
     err.message;
   }
@@ -268,7 +266,6 @@ const displayLikes = async (meal) => {
     "https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/";
   try {
     const res = await fetch(baseUrl);
-    if (!res.ok) throw new Error("No likes Found");
     const data = await res.json();
     let like = '0 like(s)';
     data.forEach((eachMeal) => {
