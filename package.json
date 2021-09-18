@@ -20,7 +20,11 @@
   },
   "homepage": "https://github.com/brytebee/JS-Capstone/dist",
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "css-loader": "^6.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
     "hint": "^6.1.4",
     "html-webpack-plugin": "^5.3.2",
     "style-loader": "^3.2.1",
@@ -29,6 +33,7 @@
     "webpack-dev-server": "^4.2.1"
   },
   "dependencies": {
+    "array.prototype.flat": "^1.2.4",
     "lodash": "^4.17.21"
   }
 }

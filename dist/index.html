@@ -15,15 +15,29 @@
     <header>
         <nav>
             <ul class="nav-list color-coffee">
-                <span>MB's Place</span>
-                <li><a>welcome</a></li>
-                <li><a>Checkout Meals</a></li>
-                <li><a>Contact Us</a></li>
-                <input type="text" id="input" placeholder="Enter first letter of dish">
+                <li>MB's CookBook</li>
+                <li><a class="nav" href="#">Recipes (<span id="recipeCount"></span>)</a></li>
+                <li><a class="nav" href="#">Checkout Meals</a></li>
+                <li><a class="nav" href="#">Contact Us</a></li>
+                <li><input type="text" id="input" placeholder="Enter first letter of dish"></li>
             </ul>
         </nav>
     </header>
     <main class="content">
+        <div id="errorContainer">
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modal-content"></div>
+            </div>
+
+        </div>
+
         <div id="mealsHolder"></div>
     </main>
 
