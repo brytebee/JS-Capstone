@@ -104,7 +104,6 @@ const commentPopUp = async (meal) => {
   const linebreak = document.createElement('br');
   const mealId = meal.idMeal;
   const allComments = document.createElement('ul');
-  const li = document.createElement('li');
   const commentButton = document.createElement('button');
   const modal = document.getElementById("myModal");
   const modalContent = document.getElementById('modal-content');
@@ -151,24 +150,37 @@ const commentPopUp = async (meal) => {
   form.append(name, linebreak, comment, linebreak);
   
   showAllComments(mealId, mealCard).then(data => {
-    console.log(data);
     if (data.message === `${mealId} not found.` || data.message === `item_id' not found.` ) {
-      commentHeader.innerText = `This Recipe has no comments yet!
-      Add some comments!`;
+      commentHeader.innerText = `This Recipe has no comments yet!\nAdd some comments!`;
     } else {
+      commentHeader.innerText = `Comments (${data.length})`;
       data.forEach((comm) => {
-        li.append(comm.username);
-        console.log(comm.username);
+        const li = document.createElement('li');
+        li.style.listStyle = 'none';
+        li.style.margin = '0 32px';
+        li.style.color = 'darkbrown';
+        li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
+        allComments.append(li);
       })
-      allComments.innerHTML = (li);
     }
   });
 
   commentButton.addEventListener('click', () => {
-    makeComment(name, comment, mealId)
-    
+    makeComment(name, comment, mealId);
     showAllComments(mealId, mealCard).then(data => {
-      
+      if (data.length === `${mealId} not found.` || data.message === `item_id' not found.` ) {
+        commentHeader.innerText = `This Recipe has no comments yet!\nAdd some comments!`;
+      } else {
+        commentHeader.innerText = `Comments (${data.length})`;
+        data.forEach((comm) => {
+          const li = document.createElement('li');
+          li.style.listStyle = 'none';
+          li.style.margin = '0 32px';
+          li.style.color = 'darkbrown';
+          li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
+          allComments.append(li);
+        })
+      }
     });
   });
 
@@ -178,7 +190,7 @@ const commentPopUp = async (meal) => {
     mealRecipe,
     mealVideoLink,
     commentHeader,
-    li,
+    // li,
     allComments,
     formHeader,
     form,
