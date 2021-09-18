@@ -1,5 +1,6 @@
-import renderError from "./error";
+import renderError from './error';
 import commentPopUp from './comment.js';
+import recipeCount from './counter.js';
 import {
   sendLikes,
 displayLikes,
@@ -7,11 +8,10 @@ displayLikes,
 
 const baseUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?f=e';
 const mealsHolder = document.getElementById('mealsHolder');
-const recipeCount = document.getElementById('recipeCount');
 mealsHolder.className = 'mealsHolder';
 
 const displayMeals = (list) => {
-  recipeCount.innerText = `${list.length}`;
+  recipeCount(list);
   list.forEach((meal) => {
     const mealCard = document.createElement('div');
     const mealImg = document.createElement('img');
