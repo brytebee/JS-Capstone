@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/brytebee/JS-Capstone/dist",
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
     "babel-eslint": "^10.1.0",
     "css-loader": "^6.2.0",
     "eslint": "^7.32.0",

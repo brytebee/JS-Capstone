@@ -1,4 +1,4 @@
-import recipeCount from '/module/counter.js'
+import recipeCount from '/module/counter.js';
 
 describe('Counter function', () => {
   test('Add one new item to the API', () => {
