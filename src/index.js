@@ -1,5 +1,5 @@
 import './style.css';
-import fetchMeals from './module/display';
+import fetchMeals from './module/display.js';
 
 fetchMeals();
 

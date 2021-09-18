@@ -1,4 +1,4 @@
-import renderError from "./error";
+import renderError from './error.js';
 
 const makeComment = async (username, userComment, id) => {
   const baseUrl = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/comments/';

@@ -1,11 +1,9 @@
-import renderError from "./error";
+import renderError from './error.js';
 
 const baseUrl = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/DG1557loKgI2XXAUI0g2/likes/';
 
-
 const sendLikes = async (meal) => {
   try {
-
     await fetch(baseUrl, {
       method: 'POST',
       headers: {
@@ -29,12 +27,12 @@ const displayLikes = async (meal) => {
       }
     });
   } catch (err) {
-    renderError(er.message);
+    renderError(err.message);
   }
   return like;
 };
 
 export {
   sendLikes,
-displayLikes,
+  displayLikes,
 };

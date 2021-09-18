@@ -1,9 +1,9 @@
-import renderError from './error';
+import renderError from './error.js';
 import commentPopUp from './comment.js';
 import recipeCount from './counter.js';
 import {
   sendLikes,
-displayLikes,
+  displayLikes,
 } from './likes.js';
 
 const baseUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?f=e';
