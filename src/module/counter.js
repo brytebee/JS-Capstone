@@ -1,5 +1,5 @@
 const recipeCount = (list) => {
-  recipeCount.innerText = `${list.length}`;
+  return list.length;
 };
 
 module.exports = recipeCount;

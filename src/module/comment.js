@@ -45,7 +45,6 @@ const commentPopUp = async (meal) => {
   const mealCard = document.createElement('div');
   const mealImg = document.createElement('img');
   const mealTitle = document.createElement('h3');
-  // const mealIgredient = document.createElement('div'); // Add meal ingredient (v2.0)
   const mealRecipe = document.createElement('div');
   const mealVideoLink = document.createElement('a');
   const form = document.createElement('form');
@@ -93,6 +92,7 @@ const commentPopUp = async (meal) => {
   comment.setAttribute('rows', '10');
   comment.setAttribute('cols', '60');
   comment.setAttribute('placeholder', 'Your Comment...');
+  comment.id = 'userComment';
 
   formHeader.innerText = 'Add a comment';
   form.className = 'comment-form';
