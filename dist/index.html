@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MB's Place</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <script defer src="index.js"></script>
+
+<script defer src="main.js"></script></head>
+
+<body>
+    <header>
+        <nav>
+            <div class="hamburger">
+                <a href="#home" class="active logo">MB's CookBook</a>
+                <div id="myLinks">
+                    <a class="nav" href="#">Recipes (<span class="recipeCount"></span>)</a>
+                    <a class="nav" href="#">Checkout Meals</a>
+                    <a class="nav" href="#">Contact Us</a>
+                    <input class="nav letter" type="text" id="input" placeholder="Enter first letter of dish">
+                </div>
+                <a href="javascript:void(0);" class="icon">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+            <ul class="nav-list color-coffee">
+                <li><a class="logo" href="#home">MB's CookBook</a></li>
+                <li><a class="nav" href="#">Recipes (<span class="recipeCount"></span>)</a></li>
+                <li><a class="nav" href="#">Checkout Meals</a></li>
+                <li><a class="nav" href="#">Contact Us</a></li>
+                <li><input type="text" id="input2" placeholder="Enter first letter of dish"></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="content">
+        <div id="errorContainer">
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modal-content"></div>
+            </div>
+
+        </div>
+
+        <div id="mealsHolder"></div>
+    </main>
+
+    <footer class="footer color-coffee">
+        <p>
+            Created by: <br>
+            <span><a href="https://www.linkedin.com/in/munsa-mibenge-a35736205/
+">Munsa Mibenge</a></span> <br>
+            & <br><span><a href="https://www.linkedin.com/in/brytebee/">Bright Atsighi</a></span>
+        </p>
+    </footer>
+</body>
+
+</html>
