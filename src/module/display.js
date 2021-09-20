@@ -6,7 +6,7 @@ import {
   displayLikes,
 } from './likes.js';
 
-const baseUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?f=a';
+const baseUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?f=e';
 const mealsHolder = document.getElementById('mealsHolder');
 mealsHolder.className = 'mealsHolder';
 
