@@ -117,7 +117,6 @@ const commentPopUp = async (meal) => {
         li.style.color = 'darkbrown';
         li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
         allComments.append(li);
-        console.log('showAllComments in cpop', comm);
       });
     }
   });
@@ -136,7 +135,6 @@ const commentPopUp = async (meal) => {
           li.style.color = 'darkbrown';
           li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
           allComments.append(li);
-          console.log('showAllComments in cpop', comm);
         });
       });
     });

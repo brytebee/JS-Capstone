@@ -8,15 +8,28 @@
     <title>MB's Place</title>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <script defer src="index.js"></script>
 
 </head>
 
 <body>
     <header>
         <nav>
+            <div class="hamburger">
+                <a href="#home" class="active logo">MB's CookBook</a>
+                <div id="myLinks">
+                    <a class="nav" href="#">Recipes (<span class="recipeCount"></span>)</a>
+                    <a class="nav" href="#">Checkout Meals</a>
+                    <a class="nav" href="#">Contact Us</a>
+                    <a href="#"><input type="text" id="input" placeholder="Enter first letter of dish"></a>
+                </div>
+                <a href="javascript:void(0);" class="icon">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
             <ul class="nav-list color-coffee">
-                <li>MB's CookBook</li>
-                <li><a class="nav" href="#">Recipes (<span id="recipeCount"></span>)</a></li>
+                <li><a class="logo" href="#home">MB's CookBook</a></li>
+                <li><a class="nav" href="#">Recipes (<span class="recipeCount"></span>)</a></li>
                 <li><a class="nav" href="#">Checkout Meals</a></li>
                 <li><a class="nav" href="#">Contact Us</a></li>
                 <li><input type="text" id="input" placeholder="Enter first letter of dish"></li>

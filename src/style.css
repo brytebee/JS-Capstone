@@ -1,4 +1,5 @@
 body {
+  font-family: Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f9faff;
@@ -210,6 +211,10 @@ textarea {
   margin-top: 16px;
 }
 
+.hamburger {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
   body {
     background-color: brown;
@@ -244,5 +249,56 @@ textarea {
 
   .modal-content {
     width: auto;
+  }
+
+  .nav-list {
+    display: none;
+  }
+
+  /* Hamburger */
+  .mobile-container {
+    max-width: 480px;
+    margin: auto;
+    background-color: #555;
+    height: 500px;
+    color: white;
+    border-radius: 10px;
+  }
+
+  .hamburger {
+    display: block;
+    overflow: hidden;
+    background-color: #333;
+    position: relative;
+  }
+
+  .hamburger #myLinks {
+    display: none;
+  }
+
+  .hamburger a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+  }
+
+  .hamburger a.icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .hamburger a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  .active {
+    background-color: #04aa6d;
+    color: white;
   }
 }
