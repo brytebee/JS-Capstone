@@ -231,25 +231,6 @@ textarea {
   .modal-content {
     width: 85%;
   }
-}
-
-@media screen and (max-width: 425px) {
-  body {
-    background-color: darkolivegreen;
-  }
-
-  .content {
-    margin: 0 5%;
-  }
-
-  .mealsHolder {
-    grid-template-columns: repeat(1, 1fr);
-    padding: 10px;
-  }
-
-  .modal-content {
-    width: auto;
-  }
 
   .nav-list {
     display: none;
@@ -300,5 +281,24 @@ textarea {
   .active {
     background-color: #04aa6d;
     color: white;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  body {
+    background-color: darkolivegreen;
+  }
+
+  .content {
+    margin: 0 5%;
+  }
+
+  .mealsHolder {
+    grid-template-columns: repeat(1, 1fr);
+    padding: 10px;
+  }
+
+  .modal-content {
+    width: auto;
   }
 }
