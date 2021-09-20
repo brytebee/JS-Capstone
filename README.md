@@ -2,7 +2,8 @@
 
 > This project is about meal recepies, categorically organizied by alphabetic order. the user accesses the site to checkout a recepie for a meal and likes the meal or even leaves a comment about the meal after trying it out
 
-![screenshot]()
+## Screenshot
+![image](https://user-images.githubusercontent.com/27709832/134076262-ee83759f-7c12-43b8-8d6e-08ef6bc2a156.png)
 
 Additional description about the project and its features.
 
