@@ -36,11 +36,8 @@ const showAllComments = async (mealId) => {
     const request = await fetch(baseUrl);
     const response = await request.json();
     data = await response;
-    if (data.error.message === '"item_id" not found.') {
-      data = 'No comment found.';
-    }
   } catch (err) {
-    renderError(err.message);
+    console.error(err.message);
   }
   return data;
 };
@@ -104,20 +101,24 @@ const commentPopUp = async (meal) => {
   form.append(name, linebreak, comment, linebreak);
 
   showAllComments(mealId).then((data) => {
-    if (data === 'No comment found.') {
-      commentHeader.innerText = 'Comments (0)';
-      allComments.innerText = `No comments yet!
-      Add comments`;
-    } else {
-      commentHeader.innerText = `Comments (${itemCount(data)})`;
-      data.forEach((comm) => {
-        const li = document.createElement('li');
-        li.style.listStyle = 'none';
-        li.style.margin = '0 32px';
-        li.style.color = 'darkbrown';
-        li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
-        allComments.append(li);
-      });
+    try {
+      if (data.error) {
+        commentHeader.innerText = 'Comments (0)';
+        allComments.innerText = `No comments yet!
+        Add comments`;
+      } else {
+        commentHeader.innerText = `Comments (${itemCount(data)})`;
+        data.forEach((comm) => {
+          const li = document.createElement('li');
+          li.style.listStyle = 'none';
+          li.style.margin = '0 32px';
+          li.style.color = 'darkbrown';
+          li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
+          allComments.append(li);
+        });
+      }
+    } catch(err) {
+      console.error(err.message);
     }
   });
 
@@ -164,7 +165,9 @@ const commentPopUp = async (meal) => {
   window.onclick = function (event) {
     if (event.target === modal) {
       modal.style.display = 'none';
-      modalContent.removeChild(mealCard);
+      if (modalContent.hasChildNodes) {
+        modalContent.removeChild(mealCard);
+      }
     }
   };
 };
