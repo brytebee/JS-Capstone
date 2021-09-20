@@ -36,8 +36,8 @@ const showAllComments = async (mealId) => {
     const request = await fetch(baseUrl);
     const response = await request.json();
     data = await response;
-    if (data.error.message === `'item_id' not found.`) {
-      data = `No comment found.`;
+    if (data.error.message === '"item_id" not found.') {
+      data = 'No comment found.';
     }
   } catch (err) {
     renderError(err.message);
@@ -104,8 +104,8 @@ const commentPopUp = async (meal) => {
   form.append(name, linebreak, comment, linebreak);
 
   showAllComments(mealId).then((data) => {
-    if (data === `No comment found.`) {
-      commentHeader.innerText = `Comments (0)`;
+    if (data === 'No comment found.') {
+      commentHeader.innerText = 'Comments (0)';
       allComments.innerText = `No comments yet!
       Add comments`;
     } else {
