@@ -1,6 +1,6 @@
 const errorMsg = document.getElementById('errorContainer');
 
-const renderError = function (msg) {
+const renderError = (msg) => {
   errorMsg.insertAdjacentText('beforeend', msg);
   errorMsg.style.opacity = 0;
 };

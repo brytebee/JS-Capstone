@@ -1,5 +1,3 @@
-const itemCount = (list) => {
-  return list.length;
-};
+const itemCount = (list) => list.length;
 
 module.exports = itemCount;
