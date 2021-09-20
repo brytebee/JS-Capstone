@@ -35,7 +35,8 @@ a,
   margin: 0 15%;
 }
 
-#input {
+#input,
+#input2 {
   align-self: center;
 }
 

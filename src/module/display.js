@@ -13,7 +13,8 @@ mealsHolder.className = 'mealsHolder';
 const displayMeals = (list) => {
   document.querySelectorAll('.recipeCount').forEach((menuCount) => {
     menuCount.innerHTML = itemCount(list);
-  })
+  });
+
   list.forEach((meal) => {
     const mealCard = document.createElement('div');
     const mealImg = document.createElement('img');
