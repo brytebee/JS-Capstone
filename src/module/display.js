@@ -1,17 +1,17 @@
 import renderError from './error.js';
 import commentPopUp from './comment.js';
-import recipeCount from './counter.js';
+import itemCount from './counter.js';
 import {
   sendLikes,
   displayLikes,
 } from './likes.js';
 
-const baseUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?f=e';
+const baseUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?f=a';
 const mealsHolder = document.getElementById('mealsHolder');
 mealsHolder.className = 'mealsHolder';
 
 const displayMeals = (list) => {
-  document.getElementById('recipeCount').innerHTML = recipeCount(list);
+  document.getElementById('recipeCount').innerHTML = itemCount(list);
   list.forEach((meal) => {
     const mealCard = document.createElement('div');
     const mealImg = document.createElement('img');
@@ -39,7 +39,7 @@ const displayMeals = (list) => {
 
     mealTitle.textContent = `${meal.strMeal.slice(0, 15)} ...`;
     mealRecipe.textContent = recipe;
-    mealVideoLink.textContent = 'Youtube Video'; // create a popup to play in-app rather that redirect (v2.0)
+    mealVideoLink.textContent = 'Youtube Video';
     commentButton.textContent = 'Comments';
     mealLink.innerHTML = '<i class="fas fa-heart"></i>';
 
@@ -60,7 +60,6 @@ const displayMeals = (list) => {
 const fetchMeals = async () => {
   try {
     const request = await fetch(baseUrl);
-
     if (!request.ok) throw new Error('Something went wrong. Try again');
     const response = await request.json();
     displayMeals(response.meals);

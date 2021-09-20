@@ -1,3 +1,4 @@
+import itemCount from './counter.js';
 import renderError from './error.js';
 
 const makeComment = async (username, userComment, id) => {
@@ -20,8 +21,8 @@ const makeComment = async (username, userComment, id) => {
         body: JSON.stringify(newComment),
       });
     }
-    username = '';
-    userComment = '';
+    document.getElementById('username').value = '';
+    document.getElementById('userComment').value = '';
   } catch (err) {
     renderError(err.message);
   }
@@ -35,6 +36,9 @@ const showAllComments = async (mealId) => {
     const request = await fetch(baseUrl);
     const response = await request.json();
     data = await response;
+    if (data.error.message === "'item_id' not found.") {
+      data = "No comment found.";
+    }
   } catch (err) {
     renderError(err.message);
   }
@@ -77,7 +81,7 @@ const commentPopUp = async (meal) => {
   mealRecipe.id = 'popup-meal-recipe';
 
   mealVideoLink.setAttribute('href', meal.strYoutube);
-  mealVideoLink.textContent = 'Youtube Video'; // create a popup to play in-app rather that redirect (v2.0)
+  mealVideoLink.textContent = 'Youtube Video';
 
   commentButton.textContent = 'Comments';
   commentButton.className = 'comment';
@@ -100,10 +104,12 @@ const commentPopUp = async (meal) => {
   form.append(name, linebreak, comment, linebreak);
 
   showAllComments(mealId).then((data) => {
-    if (data.message === `${mealId} not found.` || data.message === 'item_id\' not found.') {
-      commentHeader.innerText = 'This Recipe has no comments yet!\nAdd some comments!';
+    if (data === "No comment found.") {
+      commentHeader.innerText = `Comments (0)`;
+      allComments.innerText = `No comments yet!
+      Add comments`;
     } else {
-      commentHeader.innerText = `Comments (${data.length})`;
+      commentHeader.innerText = `Comments (${itemCount(data)})`;
       data.forEach((comm) => {
         const li = document.createElement('li');
         li.style.listStyle = 'none';
@@ -111,17 +117,18 @@ const commentPopUp = async (meal) => {
         li.style.color = 'darkbrown';
         li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
         allComments.append(li);
+        console.log('showAllComments in cpop', comm);
       });
     }
   });
 
   commentButton.addEventListener('click', () => {
-    makeComment(name, comment, mealId);
-    showAllComments(mealId).then((data) => {
-      if (data.length === `${mealId} not found.` || data.message === 'item_id\' not found.') {
-        commentHeader.innerText = 'This Recipe has no comments yet!\nAdd some comments!';
-      } else {
-        commentHeader.innerText = `Comments (${data.length})`;
+    while (allComments.firstChild) {
+      allComments.removeChild(allComments.lastChild);
+    }
+    makeComment(name, comment, mealId).then(() => {
+      showAllComments(mealId).then((data) => {
+        commentHeader.innerText = `Comments (${itemCount(data)})`;
         data.forEach((comm) => {
           const li = document.createElement('li');
           li.style.listStyle = 'none';
@@ -129,8 +136,9 @@ const commentPopUp = async (meal) => {
           li.style.color = 'darkbrown';
           li.append(`${comm.creation_date} ${comm.username} ${comm.comment}`);
           allComments.append(li);
+          console.log('showAllComments in cpop', comm);
         });
-      }
+      });
     });
   });
 
@@ -140,7 +148,6 @@ const commentPopUp = async (meal) => {
     mealRecipe,
     mealVideoLink,
     commentHeader,
-    // li,
     allComments,
     formHeader,
     form,

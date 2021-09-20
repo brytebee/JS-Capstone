@@ -1,5 +1,5 @@
-const recipeCount = (list) => {
+const itemCount = (list) => {
   return list.length;
 };
 
-module.exports = recipeCount;
+module.exports = itemCount;
