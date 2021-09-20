@@ -27,11 +27,11 @@ const displayMeals = (list) => {
       const h3Wrapper = document.createElement('div');
       const mealLink = document.createElement('a');
       const recipe = meal.strInstructions;
-  
+
       mealImg.setAttribute('src', meal.strMealThumb);
       mealImg.setAttribute('alt', meal.strMeal);
       mealVideoLink.setAttribute('href', meal.strYoutube);
-  
+
       mealImg.className = 'meal-img';
       mealLikes.className = 'meal-likes';
       h3Wrapper.className = 'likes-display';
@@ -40,13 +40,13 @@ const displayMeals = (list) => {
       mealTitle.className = 'meal-title';
       mealRecipe.className = 'meal-recipe';
       commentButton.className = 'comment';
-  
+
       mealTitle.textContent = `${meal.strMeal.slice(0, 15)} ...`;
       mealRecipe.textContent = recipe;
       mealVideoLink.textContent = 'Youtube Video';
       commentButton.textContent = 'Comments';
       mealLink.innerHTML = '<i class="fas fa-heart"></i>';
-  
+
       commentButton.addEventListener('click', () => commentPopUp(meal));
       displayLikes(meal).then((data) => { mealLikes.innerHTML = data; });
       mealLink.addEventListener('click', () => {
@@ -54,7 +54,7 @@ const displayMeals = (list) => {
           displayLikes(meal).then((data) => { mealLikes.innerHTML = data; });
         });
       });
-  
+
       h3Wrapper.append(mealTitle, mealLink);
       mealCard.append(mealImg, h3Wrapper, mealLikes, mealRecipe, commentButton);
       mealsHolder.appendChild(mealCard);
