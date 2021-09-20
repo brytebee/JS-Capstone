@@ -6,6 +6,10 @@ body {
   font-size: 1.1rem;
 }
 
+.logo {
+  font-size: 1.5rem;
+}
+
 a,
 .nav {
   text-decoration: none;
@@ -262,7 +266,6 @@ textarea {
     color: white;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
     display: block;
   }
 
@@ -270,7 +273,6 @@ textarea {
     color: red;
     padding: 14px 16px;
     margin: 16px;
-    font-size: 17px;
     display: block;
   }
 
@@ -288,7 +290,7 @@ textarea {
   }
 
   .active {
-    background-color: #04aa6d;
+    background-color: black;
     color: white;
   }
 }
