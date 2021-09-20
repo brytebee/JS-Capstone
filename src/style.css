@@ -266,6 +266,14 @@ textarea {
     display: block;
   }
 
+  .hamburger input {
+    color: red;
+    padding: 14px 16px;
+    margin: 16px;
+    font-size: 17px;
+    display: block;
+  }
+
   .hamburger a.icon {
     background: black;
     display: block;
