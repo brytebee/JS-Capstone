@@ -117,7 +117,7 @@ const commentPopUp = async (meal) => {
           allComments.append(li);
         });
       }
-    } catch(err) { console.error(err.message);}
+    } catch (err) { console.error(err.message); }
   });
 
   commentButton.addEventListener('click', () => {
